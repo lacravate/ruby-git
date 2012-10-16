@@ -50,6 +50,9 @@ module Git
       arr_opts << "-o" << opts[:remote] if opts[:remote]
       arr_opts << "--depth" << opts[:depth].to_i if opts[:depth] && opts[:depth].to_i > 0
 
+      #
+      arr_opts << opts[:switches].join(' ') unless opts[:switches].nil?
+
       arr_opts << '--'
       arr_opts << repository
       arr_opts << clone_dir
