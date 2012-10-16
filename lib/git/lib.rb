@@ -290,6 +290,7 @@ module Git
       command_lines('diff-index', treeish).each do |line|
         (info, file) = line.split("\t")
         (mode_src, mode_dest, sha_src, sha_dest, type) = info.split
+        type = 'A' if type == 'M' && sha_dest !~ /^0+$/
         hsh[file] = {:path => file, :mode_repo => mode_src.to_s[1, 7], :mode_index => mode_dest, 
                       :sha_repo => sha_src, :sha_index => sha_dest, :type => type}
       end
