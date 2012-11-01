@@ -511,8 +511,21 @@ module Git
     def checkout(branch, opts = {})
       arr_opts = []
       arr_opts << '-f' if opts[:force]
-      arr_opts << '-b' << opts[:new_branch] if opts[:new_branch]
+
+      # -- implementation of a working -b switch
+      #    for git checkout command
+      arr_opts << '-b' if opts[:new_branch]
+      # -- this push is legacy
+      #    i don't understand it and congratulate
+      #    myself not to try to and just leave it here
+      arr_opts << opts[:new_branch] if opts[:new_branch] && !opts[:new_branch].is_a?(TrueClass)
+      #
+
       arr_opts << branch
+
+      # -- we can 'git checkout `sha`' now
+      arr_opts << opts[:commit] if opts[:commit]
+      #
       
       command('checkout', arr_opts)
     end
