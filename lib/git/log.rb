@@ -90,6 +90,15 @@ module Git
       @commits.first rescue nil
     end
     
+    # -- how come we have a first and not
+    #    a last ?
+    #    well, there you go now
+    def last
+      check_log
+      @commits.last rescue nil
+    end
+    #
+
     private 
     
       def dirty_log
