@@ -170,10 +170,17 @@ module Git
       command('cat-file', ['-p', sha], &block)
     end
 
-    def ls_tree(sha)
+    def ls_tree(sha, options={})
+      # -- implement recursive ls-tree
+      command_args = []
+      command_args << '-r' if options[:recursive]
+      command_args << sha
+      #
       data = {'blob' => {}, 'tree' => {}}
       
-      command_lines('ls-tree', sha).each do |line|
+      #
+      command_lines('ls-tree', command_args).each do |line|
+      #
         (info, filenm) = line.split("\t")
         (mode, type, sha) = info.split
         data[type][filenm] = {:mode => mode, :sha => sha}

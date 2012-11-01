@@ -463,8 +463,11 @@ module Git
       self.lib.revparse(objectish)
     end
     
-    def ls_tree(objectish)
-      self.lib.ls_tree(objectish)
+    # -- addition of options noticeably to implement
+    #    a recursive ls_tree
+    def ls_tree(objectish, options={})
+    #
+      self.lib.ls_tree(objectish, options)
     end
     
     def cat_file(objectish)
