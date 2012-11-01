@@ -50,8 +50,9 @@ module Git
       arr_opts << "-o" << opts[:remote] if opts[:remote]
       arr_opts << "--depth" << opts[:depth].to_i if opts[:depth] && opts[:depth].to_i > 0
 
+      # -- allow processing of switches added as array elements
+      Array(opts[:switches]).each { |switch| arr_opts << switch }
       #
-      arr_opts << opts[:switches].join(' ') unless opts[:switches].nil?
 
       arr_opts << '--'
       arr_opts << repository
