@@ -478,11 +478,15 @@ module Git
     def stash_list
       command('stash list')
     end
-    
-    def branch_new(branch)
-      command('branch', branch)
+
+    # -- implement --t switch on git branch command
+    def branch_new(branch, track=nil)
+      options = [branch]
+      options << '--t' << track if track
+      command('branch', options)
     end
-    
+    #
+
     def branch_delete(branch)
       command('branch', ['-D', branch])
     end

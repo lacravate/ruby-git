@@ -181,8 +181,11 @@ module Git
     end
     
     # returns a Git::Branch object for branch_name
-    def branch(branch_name = 'master')
-      Git::Branch.new(self, branch_name)
+    # -- addition of options noticeably to implement
+    #    --t switch on 'git branch' command
+    def branch(branch_name = 'master', options={})
+    #
+      Git::Branch.new(self, branch_name, options[:track])
     end
     
     # returns +true+ if the branch exists locally

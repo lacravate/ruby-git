@@ -3,20 +3,25 @@ module Git
     
     attr_accessor :full, :remote, :name
     
-    def initialize(base, name)
+    # -- addition of track parameter for --t switch
+    def initialize(base, name, track=nil)
+    #
       @remote = nil
       @full = name
       @base = base
       @gcommit = nil
       @stashes = nil
       
-      parts = name.split('/')
-      if parts[1]
-        @remote = Git::Remote.new(@base, parts[0])
-        @name = parts[1]
-      else
-        @name = parts[0]
+      # -- addition of track attribute to implement
+      #    --t switch
+      @track = track
+      name, remote = name.split(' ').first.split('/').reverse
+      if remote
+        @remote = Git::Remote.new(@base, remote)
+        name = "#{remote}/#{name}"
       end
+      @name = name
+      #
     end
     
     def gcommit
@@ -93,7 +98,9 @@ module Git
     private 
 
       def check_if_create
-        @base.lib.branch_new(@name) rescue nil
+        # -- addition of track attribute
+        @base.lib.branch_new(@name, @track) rescue nil
+        #
       end
       
       def determine_current
