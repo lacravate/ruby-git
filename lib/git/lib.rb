@@ -76,7 +76,12 @@ module Git
       arr_opts << "--author=#{opts[:author]}" if opts[:author].is_a? String
       arr_opts << "#{opts[:between][0].to_s}..#{opts[:between][1].to_s}" if (opts[:between] && opts[:between].size == 2)
       arr_opts << opts[:object] if opts[:object].is_a? String
-      arr_opts << '--' << opts[:path_limiter] if opts[:path_limiter].is_a? String
+      
+      # -- always add '--' at the end of command line to allow git to
+      #    understand commands like 'git log `branch`'
+      arr_opts << '--'
+      arr_opts << opts[:path_limiter] if opts[:path_limiter].is_a? String
+      #
 
       command_lines('log', arr_opts, true).map { |l| l.split.first }
     end
@@ -91,7 +96,11 @@ module Git
       arr_opts << "--author=#{opts[:author]}" if opts[:author].is_a? String
       arr_opts << "#{opts[:between][0].to_s}..#{opts[:between][1].to_s}" if (opts[:between] && opts[:between].size == 2)
       arr_opts << opts[:object] if opts[:object].is_a? String
-      arr_opts << '--' << opts[:path_limiter] if opts[:path_limiter].is_a? String
+      
+      #
+      arr_opts << '--'
+      arr_opts << opts[:path_limiter] if opts[:path_limiter].is_a? String
+      #
       
       full_log = command_lines('log', arr_opts, true)
       process_commit_data(full_log)
