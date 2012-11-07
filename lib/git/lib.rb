@@ -57,7 +57,7 @@ module Git
       arr_opts << '--'
       arr_opts << repository
       arr_opts << clone_dir
-      
+
       command('clone', arr_opts)
       
       opts[:bare] ? {:repository => clone_dir} : {:working_directory => clone_dir}
@@ -521,10 +521,14 @@ module Git
       arr_opts << opts[:new_branch] if opts[:new_branch] && !opts[:new_branch].is_a?(TrueClass)
       #
 
-      arr_opts << branch
+      arr_opts << branch if branch
 
       # -- we can 'git checkout `sha`' now
       arr_opts << opts[:commit] if opts[:commit]
+      #
+      
+      # -- checkout paths
+      arr_opts.push '--', *opts[:files] if opts[:files]
       #
       
       command('checkout', arr_opts)
